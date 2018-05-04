@@ -1,0 +1,45 @@
+{
+  "name": "wct-parallel",
+  "version": "0.0.1",
+  "description": "Web Component Tester plugin that allows running tests across multiple browser instances in parallel",
+  "main": "lib/plugin.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jimivdw/wct-parallel.git"
+  },
+  "keywords": [
+    "wct",
+    "web-component-tester",
+    "web",
+    "component",
+    "tester",
+    "parallel"
+  ],
+  "author": "Jimi van der Woning <jimivdwoning@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jimivdw/wct-parallel/issues"
+  },
+  "homepage": "https://github.com/jimivdw/wct-parallel#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/events": "^1.2.0",
+    "@types/express": "^4.11.1",
+    "@types/node": "^10.0.3",
+    "typescript": "^2.8.3"
+  },
+  "wct-plugin": {
+    "cli-options": {
+      "instances": {
+        "help": "Number of browser instances to spawn.",
+        "full": "instances",
+        "metavar": "NUM",
+        "abbr": "i"
+      }
+    }
+  }
+}
