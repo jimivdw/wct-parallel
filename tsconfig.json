@@ -11,7 +11,10 @@
     "removeComments": false,
     "preserveConstEnums": true,
     "suppressImplicitAnyIndexErrors": true,
-    "outDir": "lib"
+    "outDir": "lib",
+    "lib": [
+      "es2017"
+    ]
   },
   "include": [
     "custom_typings/*.d.ts",
