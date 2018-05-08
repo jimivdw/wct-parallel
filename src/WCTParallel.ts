@@ -1,6 +1,6 @@
 import { cpus } from 'os';
-import { BrowserDef, Context, Config } from 'wct';
-import { Browsers, WCTParallelOptions } from './model';
+import { BrowserDef, Context } from 'wct';
+import { BrowserOptions, Browsers, WCTParallelOptions } from './model';
 
 
 interface CleanWCTParallelOptions {
@@ -13,12 +13,14 @@ interface CleanBrowserOptions {
   instances: number;
 }
 
+type BrowserSuites = { [browserId: number]: string[] };
+
 
 const LOAD_SUITES_REGEXP = /WCT\.loadSuites\((\[.*\])\);/;
 
 
 function normalizeBrowsers(browsers: Browsers = [], defaultInstanceCount: number): CleanBrowserOptions[] {
-  const normalizedBrowsers: CleanBrowserOptions[] = browsers.map((browser) => {
+  return browsers.map((browser: string | BrowserOptions) => {
     if (typeof browser === 'string') {
       return {
         browserName: browser,
@@ -28,8 +30,6 @@ function normalizeBrowsers(browsers: Browsers = [], defaultInstanceCount: number
 
     return Object.assign({ instances: defaultInstanceCount }, browser);
   });
-
-  return normalizedBrowsers;
 }
 
 function normalizeOptions(options: WCTParallelOptions, suiteCount: number): CleanWCTParallelOptions {
@@ -43,14 +43,14 @@ function normalizeOptions(options: WCTParallelOptions, suiteCount: number): Clea
 
 
 export class WCTParallel {
-  private context: Context;
-  private options: CleanWCTParallelOptions;
-  private browserSuites: { [browserId: number]: string[] };
+  private readonly context: Context;
+  private readonly options: CleanWCTParallelOptions;
+  private readonly browserSuites: BrowserSuites;
 
   constructor(context: Context, options: WCTParallelOptions) {
     this.context = context;
     this.options = normalizeOptions(options, context.options.suites.length);
-    this.browserSuites = {};
+    this.browserSuites = this.getBrowserSuites();
   }
 
   private get suites(): string[] {
@@ -58,7 +58,7 @@ export class WCTParallel {
   }
 
   private getInstanceCount(browserName: string): number {
-    const browserOptions: CleanBrowserOptions = this.options.browsers.find(browser => browser.browserName === browserName);
+    const browserOptions: CleanBrowserOptions | undefined = this.options.browsers.find(browser => browser.browserName === browserName);
     return browserOptions ? browserOptions.instances : this.options.instances;
   }
 
@@ -66,15 +66,25 @@ export class WCTParallel {
     return this.suites.slice(browserIndex * suiteCount, (browserIndex + 1) * suiteCount);
   }
 
+  private getBrowserSuites(): BrowserSuites {
+    const browserSuites: BrowserSuites = {};
+
+    let browserId = 0;
+    this.context.options.activeBrowsers.forEach((browser: BrowserDef) => {
+      const instanceCount: number = this.getInstanceCount(browser.browserName);
+      for (let i: number = 0; i < instanceCount; i++) {
+        browserSuites[browserId++] = this.getSuites(i, Math.ceil(this.suites.length / instanceCount));
+      }
+    });
+
+    return browserSuites;
+  }
+
   getParallelBrowsers(): BrowserDef[] {
     return this.context.options.activeBrowsers
       .reduce((parallelBrowsers: BrowserDef[], browser: BrowserDef) => {
         const instanceCount: number = this.getInstanceCount(browser.browserName);
-        for (let i: number = 0; i < instanceCount; i++) {
-          this.browserSuites[parallelBrowsers.length] = this.getSuites(i, Math.ceil(this.suites.length / instanceCount));
-          parallelBrowsers.push(browser);
-        }
-        return parallelBrowsers;
+        return parallelBrowsers.concat(Array(instanceCount).fill(browser));
       }, []);
   }
 

@@ -2,10 +2,7 @@ import { Context } from 'wct';
 import { WCTParallel } from './WCTParallel';
 import { WCTParallelOptions } from './model';
 
-export * from './model';
-
-
-function plugin(context: Context, pluginOptions: WCTParallelOptions) {
+function plugin(context: Context, pluginOptions: WCTParallelOptions): void {
 
   let wctParallel: WCTParallel;
 
@@ -20,4 +17,4 @@ function plugin(context: Context, pluginOptions: WCTParallelOptions) {
 
 }
 
-module.exports = plugin;
+export = plugin;

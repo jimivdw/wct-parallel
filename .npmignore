@@ -1,2 +1,8 @@
+.nyc_output/
+coverage/
+lib/test/
 node_modules/
 src/
+.nycrc
+mocha.opts
+tsconfig.json

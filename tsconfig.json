@@ -3,21 +3,27 @@
     "target": "es6",
     "module": "commonjs",
     "moduleResolution": "node",
-    "isolatedModules": false,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "declaration": true,
-    "noImplicitAny": true,
-    "removeComments": false,
-    "preserveConstEnums": true,
-    "suppressImplicitAnyIndexErrors": true,
     "outDir": "lib",
     "lib": [
       "es2017"
-    ]
+    ],
+    "removeComments": false,
+    "declaration": true,
+    "sourceMap": true,
+    "pretty": true,
+    "preserveConstEnums": true,
+
+    "isolatedModules": false,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "suppressImplicitAnyIndexErrors": false
   },
   "include": [
     "custom_typings/*.d.ts",
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "test/**/*.ts"
   ]
 }
