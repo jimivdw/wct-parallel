@@ -1,6 +1,6 @@
 {
   "name": "wct-parallel",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Web Component Tester plugin that allows running tests across multiple browser instances in parallel",
   "main": "lib/plugin.js",
   "scripts": {
