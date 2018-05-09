@@ -9,7 +9,7 @@
 npm install --save-dev wct-parallel
 ```
 
-You can then add the plugin in your [WCT Configuration](https://github.com/Polymer/tools/tree/master/packages/web-component-tester#configuration) or enable it via the `--plugin wct-istanbub` CLI option.
+You can then add the plugin in your [WCT Configuration](https://github.com/Polymer/tools/tree/master/packages/web-component-tester#configuration) or enable it via the `--plugin wct-parallel` CLI option.
 
 ## Configuration
 
